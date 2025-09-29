@@ -7,8 +7,8 @@ import java.awt.event.ActionListener;
  * Tic Tac Toe game with a GUI
  *
  * @author Matt Bennett
+ * @author Tom Wulf - original console game
  */
-
 public class TicTacToeFrame extends JFrame implements ActionListener
 {
     private static final int ROW = 3;
@@ -32,6 +32,10 @@ public class TicTacToeFrame extends JFrame implements ActionListener
 
     JOptionPane msgBox;
 
+    // I suggest that you sub-class the JButton to create a TicTacToeButton class
+    // that holds the state of the button.
+    // There is a sample example of this TicTacToeTile.java
+    // and a test program TicTacToeTileTester.java)
     TicTacToeTile[][] tiles = new TicTacToeTile[ROW][COL];
 
     public TicTacToeFrame()
@@ -79,30 +83,44 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         middlePnl.setOpaque(true);
         middlePnl.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-        textFld = new JTextField(20);
+        textFld = new JTextField(14);
         textFld.setText(" ");
         textFld.setFont(new Font("Verdana", Font.BOLD, 14));
         textFld.setForeground(Color.BLACK);
+        textFld.setHorizontalAlignment(SwingConstants.CENTER);
         textFld.setEditable(false);
         middlePnl.add(textFld);
     }
 
-    private void createBottomPanel() {
+    private void createBottomPanel()
+    {
         bottomPnl = new JPanel();
         bottomPnl.setBackground(Color.LIGHT_GRAY);
         bottomPnl.setOpaque(true);
         bottomPnl.setLayout(new GridLayout(3, 3));
         bottomPnl.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        for (int row = 0; row < 3; row++) {
-            for (int col = 0; col < 3; col++) {
-                board[row][col] = new TicTacToeTile(row, col);
-                board[row][col].addActionListener(this);
-                bottomPnl.add(board[row][col]);
+        // 4. Use grid layout to create a 3 X 3 matrix of JButton objects
+        // for the Tic Tac Toe board.
+        // Provide a quit button as well.
+        // Hint: use an Array of JButton objects for the squares.
+        // IF you do this in a clever way as a 2D array,
+        // it will interface nicely with your previous code for the game.
+        for (int row = 0; row < 3; row++)
+        {
+            for (int col = 0; col < 3; col++)
+            {
+                tiles[row][col] = new TicTacToeTile(row, col);
+                tiles[row][col].addActionListener(this);
+                bottomPnl.add(tiles[row][col]);
             }
         }
     }
 
+    // 5. You also want to create a single listener instance
+    // for all the Buttons on the board.
+    // It should determine the row col position of the Button
+    // and interface with the code for the game logic.
     @Override
     public void actionPerformed(ActionEvent e)
     {
@@ -111,15 +129,24 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         {
             return;
         }
+        // 2. The game is the same in every respect to the previous lab from CP I
+        // (where we refactored Tic Tac Toe console code from the text)
+        // except that there is now a GUI to handle the display of the game state
+        // and the input from the user.
+        // Starting with X each player alternates making a move by clicking on a square.
 
         // Get the row and col of clicked tile
         TicTacToeTile clickedTile = (TicTacToeTile) e.getSource();
         int row = clickedTile.getRow();
         int col = clickedTile.getCol();
 
+        // The game blocks until a legal move is entered
         // Check if the move is valid
         if (!isValidMove(row, col))
         {
+            // 3. Use JOptionPane to msg the user as needed for illegal moves
+            // and when the game is won or tied, or the user quits.
+            // Do not use any console (System.out.print…) output as this is a GUI program.
             JOptionPane.showMessageDialog(this, "Invalid move! Cell is already occupied.",
                     "Invalid Move", JOptionPane.WARNING_MESSAGE);
             return;
@@ -137,14 +164,18 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         board[row][col] = player;
         tile.setText(player);
         moveCnt++;
-        textFld.setText("Enter move for " + (player.equals("X") ? "O" : "X"));
+        textFld.setText("Enter move for " + (player.equals("X") ? "O" : "X") + ".");
     }
 
     private void checkGameState()
     {
+        // The game should check for wins after each move
         if (moveCnt >= MOVES_FOR_WIN && isWin(player))
         {
             gameActive = false;
+            // 3. Use JOptionPane to msg the user as needed for illegal moves
+            // and when the game is won or tied, or the user quits.
+            // Do not use any console (System.out.print…) output as this is a GUI program.
             JOptionPane.showMessageDialog(this,
                     "Player " + player + " wins!",
                     "Game Over",
@@ -156,6 +187,9 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         // Check for win
         if (moveCnt >= MOVES_FOR_WIN && isWin(player))
         {
+            // 3. Use JOptionPane to msg the user as needed for illegal moves
+            // and when the game is won or tied, or the user quits.
+            // Do not use any console (System.out.print…) output as this is a GUI program.
             JOptionPane.showMessageDialog(this, "Player " + player + " wins!",
                     "Game Over", JOptionPane.INFORMATION_MESSAGE);
             clearBoard();
@@ -165,33 +199,32 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         // Check for tie
         if (moveCnt >= MOVES_FOR_TIE && isTie())
         {
+            // 3. Use JOptionPane to msg the user as needed for illegal moves
+            // and when the game is won or tied, or the user quits.
+            // Do not use any console (System.out.print…) output as this is a GUI program.
             JOptionPane.showMessageDialog(this, "It's a Tie!",
                     "Game Over", JOptionPane.INFORMATION_MESSAGE);
             clearBoard();
             return;
         }
 
+        // and then switches to receive input from the other player.
         // Switch players
         player = player.equals("X") ? "O" : "X";
     }
-// 2. The game is the same in every respect to the previous lab from CP I
-// (where we refactored Tic Tac Toe console code from the text)
-// except that there is now a GUI to handle the display of the game state
-// and the input from the user.
-// Starting with X each player alternates making a move by clicking on a square.
-// The game blocks until a legal move is entered
-// and then switches to receive input from the other player.
-// The game should check for wins after each move
-// starting with the 5th and should check for a tie (7th move).
-//
 
-    private void playAgain() {
+    private void playAgain()
+    {
+        // 3. Use JOptionPane to msg the user as needed for illegal moves
+        // and when the game is won or tied, or the user quits.
+        // Do not use any console (System.out.print…) output as this is a GUI program.
         int response = JOptionPane.showConfirmDialog(this,
                 "Would you like to play again?",
                 "New Game",
                 JOptionPane.YES_NO_OPTION);
 
-        if (response == JOptionPane.YES_OPTION) {
+        if (response == JOptionPane.YES_OPTION)
+        {
             clearBoard();
         } else {
             dispose();
@@ -211,21 +244,7 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         player = "X";
         moveCnt = 0;
         gameActive = true;
-        textFld.setText("Enter move for " + player);
-    }
-
-    private static void display()
-    {
-        // shows the Tic Tac Toe game
-        for(int row=0; row < ROW; row++)
-        {
-            System.out.print("| ");
-            for(int col=0; col < COL; col++)
-            {
-                System.out.print(board[row][col] + " | ");
-            }
-            System.out.println();
-        }
+        textFld.setText("Enter move for " + player + ".");
     }
 
     private boolean isValidMove(int row, int col)
@@ -279,7 +298,6 @@ public class TicTacToeFrame extends JFrame implements ActionListener
     private boolean isDiagonalWin(String player)
     {
         // checks for a diagonal win for the specified player
-
         if(board[0][0].equals(player) &&
                 board[1][1].equals(player) &&
                 board[2][2].equals(player) )
@@ -295,6 +313,7 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         return false;
     }
 
+    // starting with the 5th and should check for a tie (7th move).
     // checks for a tie before board is filled.
     // check for the win first to be efficient
     private boolean isTie()
@@ -392,24 +411,3 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         return true;
     }
 }
-// 3. Use JOptionPane to msg the user as needed for illegal moves
-// and when the game is won or tied, or the user quits.
-// Do not use any console (System.out.print…) output as this is a GUI program.
-//
-// 4. Use grid layout to create a 3 X 3 matrix of JButton objects
-// for the Tic Tac Toe board.
-// Provide a quit button as well.
-// Hint: use an Array of JButton objects for the squares.
-// IF you do this in a clever way as a 2D array,
-// it will interface nicely with your previous code for the game.
-// I suggest that you sub-class the JButton to create a TicTacToeButton class
-// that holds the state of the button.
-// There is a sample example of this TicTacToeTile.java
-// and a test program TicTacToeTileTester.java)
-//
-// 5. You also want to create a single listener instance
-// for all the Buttons on the board.
-// It should determine the row col position of the Button
-// and interface with the code for the game logic.
-
-

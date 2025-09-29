@@ -5,7 +5,7 @@ import java.awt.*;
 /**
  *
  * @author wulft
- * @author Matt Bennett - added display options
+ * @author Matt Bennett - added display options to tile
  */
 public class TicTacToeTile extends JButton
 {
