@@ -35,7 +35,6 @@ public class TicTacToeFrame extends JFrame implements ActionListener
     // I suggest that you sub-class the JButton to create a TicTacToeButton class
     // that holds the state of the button.
     // There is a sample example of this TicTacToeTile.java
-    // and a test program TicTacToeTileTester.java)
     TicTacToeTile[][] tiles = new TicTacToeTile[ROW][COL];
 
     public TicTacToeFrame()
