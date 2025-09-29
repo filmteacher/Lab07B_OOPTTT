@@ -57,7 +57,7 @@ public class TicTacToeFrame extends JFrame implements ActionListener
 
         // Initialize the game
         clearBoard();
-        textFld.setText("Enter move for " + player);
+        textFld.setText("Enter move for " + player + ".");
     }
 
     private void createTopPanel()
