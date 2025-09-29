@@ -1,15 +1,11 @@
 
-import javax.swing.JButton;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+import javax.swing.*;
+import java.awt.*;
 
 /**
  *
  * @author wulft
+ * @author Matt Bennett - added display options
  */
 public class TicTacToeTile extends JButton
 {
@@ -20,6 +16,12 @@ public class TicTacToeTile extends JButton
         super();
         this.row = row;
         this.col = col;
+
+        setPreferredSize(new Dimension(100, 100));
+        setFont(new Font("Verdana", Font.BOLD, 48));
+        setForeground(Color.BLACK);
+        setVerticalTextPosition(JLabel.CENTER);
+        setHorizontalTextPosition(JLabel.CENTER);
     }
 
     public int getRow() {
@@ -29,8 +31,5 @@ public class TicTacToeTile extends JButton
     public int getCol() {
         return col;
     }
-    
-    
-    
-    
+
 }
