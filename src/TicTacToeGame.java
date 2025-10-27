@@ -1,6 +1,9 @@
 import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class TicTacToeGame
+public class TicTacToeGame extends Component implements ActionListener
 {
 
     private final int MOVES_FOR_WIN = 5;
@@ -10,15 +13,40 @@ public class TicTacToeGame
     private int moveCnt = 0;
     private boolean gameActive = true;
 
-    private void initializeGame()
+    public void TicTacToeGame(String[] args)
     {
-        TicTacToeBoard.clearBoard();
+        this.initializeGame();
 
-        player = "X";
-        moveCnt = 0;
-        gameActive = true;
+    }
 
-        TicTacToeFrame.setPlayerText(player);
+
+    @Override
+    public void actionPerformed(ActionEvent e)
+    {
+        // Nothing clicked
+        if (!gameActive || !(e.getSource() instanceof TicTacToeTile))
+        {
+            return;
+        }
+
+        // Get the row and col of clicked tile
+        TicTacToeTile clickedTile = (TicTacToeTile) e.getSource();
+        int row = clickedTile.getRow();
+        int col = clickedTile.getCol();
+
+        // Check if the move is valid
+        if (!isValidMove(row, col))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid move! Cell is already occupied.",
+                    "Invalid Move", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // Make move
+        makeMove(clickedTile, row, col);
+
+        // Check game state
+        checkGameState();
     }
 
     private void makeMove(TicTacToeTile tile, int row, int col)
@@ -159,9 +187,7 @@ public class TicTacToeGame
         return false;
     }
 
-    // starting with the 5th and should check for a tie (7th move).
     // checks for a tie before board is filled.
-    // check for the win first to be efficient
     private boolean isTie()
     {
         boolean xFlag = false;
@@ -255,5 +281,15 @@ public class TicTacToeGame
 
         // Checked every vector so I know I have a tie
         return true;
+    }
+    private void initializeGame()
+    {
+        TicTacToeBoard.clearBoard();
+
+        player = "X";
+        moveCnt = 0;
+        gameActive = true;
+
+        TicTacToeFrame.setPlayerText(player);
     }
 }

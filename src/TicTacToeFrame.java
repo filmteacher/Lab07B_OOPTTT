@@ -2,15 +2,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class TicTacToeFrame extends JFrame implements ActionListener
+public class TicTacToeFrame extends JFrame
 {
     JPanel mainPnl;
-    JPanel topPnl;
-    JPanel middlePnl;
-    JPanel bottomPnl;
+    JPanel titlePnl;
+    JPanel msgPnl;
+    static JPanel boardPnl;
 
     JTextField textFld;
 
@@ -36,13 +34,13 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         mainPnl.setLayout(new BorderLayout());
 
         createTopPanel();
-        mainPnl.add(topPnl, BorderLayout.NORTH);
+        mainPnl.add(titlePnl, BorderLayout.NORTH);
 
         createMiddlePanel();
-        mainPnl.add(middlePnl, BorderLayout.CENTER);
+        mainPnl.add(msgPnl, BorderLayout.CENTER);
 
         createBottomPanel();
-        mainPnl.add(bottomPnl, BorderLayout.SOUTH);
+        mainPnl.add(boardPnl, BorderLayout.SOUTH);
 
         add(mainPnl);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -50,10 +48,10 @@ public class TicTacToeFrame extends JFrame implements ActionListener
 
     private void createTopPanel()
     {
-        topPnl = new JPanel();
-        topPnl.setBackground(Color.LIGHT_GRAY);
-        topPnl.setOpaque(true);
-        topPnl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        titlePnl = new JPanel();
+        titlePnl.setBackground(Color.LIGHT_GRAY);
+        titlePnl.setOpaque(true);
+        titlePnl.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         titleLbl = new JLabel("Tic Tac Toe", JLabel.CENTER);
         titleLbl.setFont(new Font("Verdana", Font.BOLD, 32));
@@ -61,15 +59,15 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         titleLbl.setVerticalTextPosition(JLabel.TOP);
         titleLbl.setHorizontalTextPosition(JLabel.CENTER);
 
-        topPnl.add(titleLbl);
+        titlePnl.add(titleLbl);
     }
 
     private void createMiddlePanel()
     {
-        middlePnl = new JPanel();
-        middlePnl.setBackground(Color.LIGHT_GRAY);
-        middlePnl.setOpaque(true);
-        middlePnl.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+        msgPnl = new JPanel();
+        msgPnl.setBackground(Color.LIGHT_GRAY);
+        msgPnl.setOpaque(true);
+        msgPnl.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         textFld = new JTextField(14);
         textFld.setText(" ");
@@ -77,20 +75,19 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         textFld.setForeground(Color.BLACK);
         textFld.setHorizontalAlignment(SwingConstants.CENTER);
         textFld.setEditable(false);
-        middlePnl.add(textFld);
+        msgPnl.add(textFld);
     }
 
     private void createBottomPanel()
     {
-        bottomPnl = new JPanel();
-        bottomPnl.setBackground(Color.LIGHT_GRAY);
-        bottomPnl.setOpaque(true);
-        bottomPnl.setLayout(new GridLayout(3, 3));
-        bottomPnl.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        boardPnl = new JPanel();
+        boardPnl.setBackground(Color.LIGHT_GRAY);
+        boardPnl.setOpaque(true);
+        boardPnl.setLayout(new GridLayout(3, 3));
+        boardPnl.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
     }
 
-    private void setPlayerText(String player)
-    {
-        textFld.setText("Enter move for " + player + ".");
+    public void setPlayerText(String player) {
+        msgPnl.textFld.setText("Enter move for " + player + ".");
     }
 }
