@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class TicTacToeGame extends Component {
+public class TicTacToeGame {
 
     final int MOVES_FOR_WIN = 5;
     final int MOVES_FOR_TIE = 7;
@@ -10,7 +10,7 @@ public class TicTacToeGame extends Component {
     int moveCnt = 0;
 
     public TicTacToeFrame frame;
-    private TicTacToeBoard board;
+    public TicTacToeBoard board;
 
     public TicTacToeGame(TicTacToeBoard board, TicTacToeFrame frame)
     {
@@ -19,7 +19,7 @@ public class TicTacToeGame extends Component {
         this.initializeGame();
     }
 
-    public void makeMove(TicTacToeTile tile, int row, int col)
+    public void makeMove(int row, int col)
     {
         board.setBoardValue(row, col, player);
         moveCnt++;
@@ -27,11 +27,11 @@ public class TicTacToeGame extends Component {
         //checks for win
         if (moveCnt >= MOVES_FOR_WIN && isWin(player))
         {
-            JOptionPane.showMessageDialog(this,
+            JOptionPane.showMessageDialog(frame,
                     "Player " + player + " wins!",
                     "Game Over",
                     JOptionPane.INFORMATION_MESSAGE);
-            frame.clearBoard();
+            board.clearBoard();
             playAgain();
             return;
         }
@@ -39,11 +39,11 @@ public class TicTacToeGame extends Component {
         // checks for tie
         if (moveCnt >= MOVES_FOR_TIE && isTie())
         {
-            JOptionPane.showMessageDialog(this,
+            JOptionPane.showMessageDialog(frame,
                     "It's a Tie!",
                     "Game Over",
                     JOptionPane.INFORMATION_MESSAGE);
-            frame.clearBoard();
+            board.clearBoard();
             playAgain();
             return;
         }
@@ -54,7 +54,7 @@ public class TicTacToeGame extends Component {
 
     private void playAgain()
     {
-        int response = JOptionPane.showConfirmDialog(this,
+        int response = JOptionPane.showConfirmDialog(frame,
                 "Would you like to play again?",
                 "New Game",
                 JOptionPane.YES_NO_OPTION);
@@ -111,15 +111,15 @@ public class TicTacToeGame extends Component {
 
     private boolean isDiagonalWin(String player)
     {
-        if(frame.board[0][0].equals(player) &&
-                frame.board[1][1].equals(player) &&
-                frame.board[2][2].equals(player) )
+        if(board.getBoardValue(0, 0).equals(player) &&
+                board.getBoardValue(1, 1).equals(player) &&
+                board.getBoardValue(2, 2).equals(player) )
         {
             return true;
         }
-        if(frame.board[0][2].equals(player) &&
-                frame.board[1][1].equals(player) &&
-                frame.board[2][0].equals(player) )
+        if(board.getBoardValue(0, 2).equals(player) &&
+                board.getBoardValue(1, 1).equals(player) &&
+                board.getBoardValue(2, 0).equals(player) )
         {
             return true;
         }
@@ -133,15 +133,15 @@ public class TicTacToeGame extends Component {
 
         for(int row=0; row < TicTacToeBoard.ROW; row++)
         {
-            if(frame.board[row][0].equals("X") ||
-                    frame.board[row][1].equals("X") ||
-                    frame.board[row][2].equals("X"))
+            if(board.getBoardValue(row, 0).equals("X") ||
+                    board.getBoardValue(row, 1).equals("X") ||
+                    board.getBoardValue(row, 2).equals("X"))
             {
                 xFlag = true; // there is an X in this row
             }
-            if(frame.board[row][0].equals("O") ||
-                    frame.board[row][1].equals("O") ||
-                    frame.board[row][2].equals("O"))
+            if(board.getBoardValue(row, 0).equals("O") ||
+                    board.getBoardValue(row, 1).equals("O") ||
+                    board.getBoardValue(row, 2).equals("O"))
             {
                 oFlag = true; // there is an O in this row
             }
@@ -157,15 +157,15 @@ public class TicTacToeGame extends Component {
 
         for(int col=0; col < TicTacToeBoard.COL; col++)
         {
-            if(frame.board[0][col].equals("X") ||
-                    frame.board[1][col].equals("X") ||
-                    frame.board[2][col].equals("X"))
+            if(board.getBoardValue(0, col).equals("X") ||
+                    board.getBoardValue(1, col).equals("X") ||
+                    board.getBoardValue(2, col).equals("X"))
             {
                 xFlag = true; // there is an X in this col
             }
-            if(frame.board[0][col].equals("O") ||
-                    frame.board[1][col].equals("O") ||
-                    frame.board[2][col].equals("O"))
+            if(board.getBoardValue(0, col).equals("O") ||
+                    board.getBoardValue(1, col).equals("O") ||
+                    board.getBoardValue(2, col).equals("O"))
             {
                 oFlag = true; // there is an O in this col
             }
@@ -178,15 +178,15 @@ public class TicTacToeGame extends Component {
 
         xFlag = oFlag = false;
 
-        if(frame.board[0][0].equals("X") ||
-                frame.board[1][1].equals("X") ||
-                frame.board[2][2].equals("X") )
+        if(board.getBoardValue(0, 0).equals("X") ||
+                board.getBoardValue(1, 1).equals("X") ||
+                board.getBoardValue(2, 2).equals("X") )
         {
             xFlag = true;
         }
-        if(frame.board[0][0].equals("O") ||
-                frame.board[1][1].equals("O") ||
-                frame.board[2][2].equals("O") )
+        if(board.getBoardValue(0, 0).equals("O") ||
+                board.getBoardValue(1, 1).equals("O") ||
+                board.getBoardValue(2, 2).equals("O") )
         {
             oFlag = true;
         }
@@ -196,15 +196,15 @@ public class TicTacToeGame extends Component {
         }
         xFlag = oFlag = false;
 
-        if(frame.board[0][2].equals("X") ||
-                frame.board[1][1].equals("X") ||
-                frame.board[2][0].equals("X") )
+        if(board.getBoardValue(0, 2).equals("X") ||
+                board.getBoardValue(1, 1).equals("X") ||
+                board.getBoardValue(2, 0).equals("X") )
         {
             xFlag =  true;
         }
-        if(frame.board[0][2].equals("O") ||
-                frame.board[1][1].equals("O") ||
-                frame.board[2][0].equals("O") )
+        if(board.getBoardValue(0, 2).equals("O") ||
+                board.getBoardValue(1, 1).equals("O") ||
+                board.getBoardValue(2, 0).equals("O") )
         {
             oFlag =  true;
         }
@@ -218,9 +218,9 @@ public class TicTacToeGame extends Component {
 
     private void initializeGame()
     {
-        frame.clearBoard();
-
         player = "X";
         moveCnt = 0;
+        board.clearBoard();
+        frame.setPlayerText("X");
     }
 }

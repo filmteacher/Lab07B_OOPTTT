@@ -11,14 +11,13 @@ public class TicTacToeFrame extends JFrame implements ActionListener
     JPanel titlePnl;
     JPanel msgPnl;
 
-    private JTextField textFld;
-
+    JTextField textFld;
     JLabel titleLbl;
 
-    private TicTacToeGame game;
+    public TicTacToeGame game;
     public TicTacToeBoard board;
 
-    TicTacToeFrame()
+    public TicTacToeFrame()
     {
         this.setTitle("Tic Tac Toe");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -44,7 +43,7 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         board = new TicTacToeBoard(this);
         game = new TicTacToeGame(board, this);
 
-        mainPnl.add(board.getBoardPanel(), BorderLayout.CENTER); // Board is now in CENTER
+        mainPnl.add(board.getBoardPanel(), BorderLayout.SOUTH);
 
         add(mainPnl);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,7 +73,6 @@ public class TicTacToeFrame extends JFrame implements ActionListener
         msgPnl.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
         textFld = new JTextField(14);
-        textFld.setText(" ");
         textFld.setFont(new Font("Verdana", Font.BOLD, 14));
         textFld.setForeground(Color.BLACK);
         textFld.setHorizontalAlignment(SwingConstants.CENTER);
@@ -101,14 +99,10 @@ public class TicTacToeFrame extends JFrame implements ActionListener
             return;
         }
 
-        game.makeMove(clickedTile, row, col);
+        game.makeMove(row, col);
     }
 
-    public void clearBoard() {
-        board.clearBoard();
-        }
-
-    private void setPlayerText(String player) {
-        msgPnl.setText("Enter move for " + player + ".");
+    public void setPlayerText(String player) {
+        textFld.setText("Enter move for " + player + ".");
     }
 }
