@@ -1,6 +1,4 @@
 import javax.swing.JFrame;
-import java.awt.event.ActionEvent;
-
 
 /**
  * Tic Tac Toe game with a GUI refactored to be object-oriented

@@ -24,7 +24,6 @@ public class TicTacToeGame {
         board.setBoardValue(row, col, player);
         moveCnt++;
 
-        //checks for win
         if (moveCnt >= MOVES_FOR_WIN && isWin(player))
         {
             JOptionPane.showMessageDialog(frame,
@@ -36,7 +35,6 @@ public class TicTacToeGame {
             return;
         }
 
-        // checks for tie
         if (moveCnt >= MOVES_FOR_TIE && isTie())
         {
             JOptionPane.showMessageDialog(frame,
