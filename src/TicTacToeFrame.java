@@ -2,21 +2,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-public class TicTacToeFrame extends JFrame
+public class TicTacToeFrame extends JFrame implements ActionListener
 {
     JPanel mainPnl;
     JPanel titlePnl;
     JPanel msgPnl;
-    static JPanel boardPnl;
 
-    JTextField textFld;
+    private JTextField textFld;
 
     JLabel titleLbl;
 
-    JOptionPane msgBox;
+    private TicTacToeGame game;
+    public TicTacToeBoard board;
 
-    public TicTacToeFrame()
+    TicTacToeFrame()
     {
         this.setTitle("Tic Tac Toe");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -39,8 +41,10 @@ public class TicTacToeFrame extends JFrame
         createMiddlePanel();
         mainPnl.add(msgPnl, BorderLayout.CENTER);
 
-        createBottomPanel();
-        mainPnl.add(boardPnl, BorderLayout.SOUTH);
+        board = new TicTacToeBoard(this);
+        game = new TicTacToeGame(board, this);
+
+        mainPnl.add(board.getBoardPanel(), BorderLayout.CENTER); // Board is now in CENTER
 
         add(mainPnl);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -78,16 +82,33 @@ public class TicTacToeFrame extends JFrame
         msgPnl.add(textFld);
     }
 
-    private void createBottomPanel()
+    @Override
+    public void actionPerformed(ActionEvent e)
     {
-        boardPnl = new JPanel();
-        boardPnl.setBackground(Color.LIGHT_GRAY);
-        boardPnl.setOpaque(true);
-        boardPnl.setLayout(new GridLayout(3, 3));
-        boardPnl.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        if (!(e.getSource() instanceof TicTacToeTile))
+        {
+            return;
+        }
+
+        TicTacToeTile clickedTile = (TicTacToeTile) e.getSource();
+        int row = clickedTile.getRow();
+        int col = clickedTile.getCol();
+
+        if (!game.isValidMove(row, col))
+        {
+            JOptionPane.showMessageDialog(this, "Invalid move! Cell is already occupied.",
+                    "Invalid Move", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        game.makeMove(clickedTile, row, col);
     }
 
-    public void setPlayerText(String player) {
-        msgPnl.textFld.setText("Enter move for " + player + ".");
+    public void clearBoard() {
+        board.clearBoard();
+        }
+
+    private void setPlayerText(String player) {
+        msgPnl.setText("Enter move for " + player + ".");
     }
 }
